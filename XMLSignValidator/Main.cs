@@ -68,7 +68,7 @@ namespace XMLSignValidator {
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
 		}
 
-		private static bool SignVerify(XmlDocument document) {
+		private bool SignVerify(XmlDocument document) {
 			if (document == null) throw new ArgumentNullException(nameof(document), "XML document is null.");
 
 			SignedXml signed = new SignedXml(document);
@@ -92,7 +92,7 @@ namespace XMLSignValidator {
 
 			if (certs.Count > 1) throw new CryptographicException($"This XML contains more than one certificate.");
 
-			return signed.CheckSignature(certs[0], true);
+			return signed.CheckSignature(certs[0], !validateCertCfg.Checked);
 		}
 	}
 }
