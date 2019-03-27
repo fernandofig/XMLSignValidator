@@ -73,7 +73,7 @@ namespace XMLSignValidator {
 
 			SignedXml signed = new SignedXml(document);
 			XmlNodeList list = document.GetElementsByTagName("Signature");
-			if (list == null)
+			if (list == null || list.Count == 0)
 				throw new CryptographicException($"This XML doesn't contain a signature.");
 			if (list.Count > 1)
 				throw new CryptographicException($"This XML contains more than one signature.");
