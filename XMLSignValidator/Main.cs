@@ -35,9 +35,9 @@ namespace XMLSignValidator {
 				}
 			} catch (Exception e) {
 				if (e is XmlException) {
-					MessageBox.Show("Error parsing file as an XML.\n\nIs this a valid XML file?", "Error!");
+					TopMessageBox.Show("Error parsing file as an XML.\n\nIs this a valid XML file?", "Error!");
 				} else {
-					MessageBox.Show(e.GetBaseException().Message, "Error!");
+					TopMessageBox.Show(e.GetBaseException().Message, "Error!");
 				}
 			}
 		}
@@ -50,14 +50,14 @@ namespace XMLSignValidator {
 				return;
 
 			if (files.Count > 1) {
-				MessageBox.Show("Drop only 1 file!", "Warning");
+				TopMessageBox.Show("Drop only 1 file!", "Warning");
 				return;
 			}
 
 			FileAttributes attr = File.GetAttributes(files[0]);
 
 			if (attr.HasFlag(FileAttributes.Directory) || Path.GetExtension(files[0]).ToLower() != ".xml") {
-				MessageBox.Show("This application accepts only XML files", "Warning");
+				TopMessageBox.Show("This application accepts only XML files", "Warning");
 				return;
 			}
 
@@ -93,6 +93,12 @@ namespace XMLSignValidator {
 			if (certs.Count > 1) throw new CryptographicException($"This XML contains more than one certificate.");
 
 			return signed.CheckSignature(certs[0], !validateCertCfg.Checked);
+		}
+	}
+
+	public static class TopMessageBox {
+		public static DialogResult Show(string text, string caption) {
+			return MessageBox.Show(new Form { TopMost = true }, text, caption, MessageBoxButtons.OK);
 		}
 	}
 }
