@@ -47,7 +47,7 @@
 			this.Result.Name = "Result";
 			this.Result.Size = new System.Drawing.Size(324, 25);
 			this.Result.TabIndex = 1;
-			this.Result.Text = "Arraste um XML para a área acima!";
+			this.Result.Text = "Drag && Drop an XML above!";
 			this.Result.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// Main
@@ -63,7 +63,7 @@
 			this.Name = "Main";
 			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Validador de Assinatura de XMLs";
+			this.Text = "XML Signature Validator";
 			this.TopMost = true;
 			this.ResumeLayout(false);
 

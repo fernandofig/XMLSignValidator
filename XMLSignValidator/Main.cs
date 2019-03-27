@@ -27,17 +27,17 @@ namespace XMLSignValidator {
 				bool valid = SignVerify(x);
 
 				if (valid) {
-					Result.Text = "Válido";
+					Result.Text = "Valid";
 					Result.ForeColor = Color.Green;
 				} else {
-					Result.Text = "Inválido";
+					Result.Text = "Invalid";
 					Result.ForeColor = Color.Red;
 				}
 			} catch (Exception e) {
 				if (e is XmlException) {
-					MessageBox.Show("Erro ao parsear o arquivo como XML.\n\nEste arquivo é um XML válido?", "Erro!");
+					MessageBox.Show("Error parsing file as an XML.\n\nIs this a valid XML file?", "Error!");
 				} else {
-					MessageBox.Show(e.GetBaseException().Message, "Erro!");
+					MessageBox.Show(e.GetBaseException().Message, "Error!");
 				}
 			}
 		}
@@ -50,19 +50,14 @@ namespace XMLSignValidator {
 				return;
 
 			if (files.Count > 1) {
-				MessageBox.Show("Arraste apenas 1 arquivo!", "Atenção");
+				MessageBox.Show("Drop only 1 file!", "Warning");
 				return;
 			}
 
 			FileAttributes attr = File.GetAttributes(files[0]);
 
-			if (attr.HasFlag(FileAttributes.Directory)) {
-				MessageBox.Show("Esta aplicação aceita apenas arquivos XML", "Atenção");
-				return;
-			}
-
-			if (Path.GetExtension(files[0]).ToLower() != ".xml") {
-				MessageBox.Show("Esta aplicação aceita apenas arquivos XML", "Atenção");
+			if (attr.HasFlag(FileAttributes.Directory) || Path.GetExtension(files[0]).ToLower() != ".xml") {
+				MessageBox.Show("This application accepts only XML files", "Warning");
 				return;
 			}
 
@@ -79,9 +74,9 @@ namespace XMLSignValidator {
 			SignedXml signed = new SignedXml(document);
 			XmlNodeList list = document.GetElementsByTagName("Signature");
 			if (list == null)
-				throw new CryptographicException($"O XML não possui uma assinatura.");
+				throw new CryptographicException($"This XML doesn't contain a signature.");
 			if (list.Count > 1)
-				throw new CryptographicException($"O XML contém mais de uma assinatura.");
+				throw new CryptographicException($"This XML contains more than one signature.");
 
 			signed.LoadXml((XmlElement)list[0]);
 
@@ -93,9 +88,9 @@ namespace XMLSignValidator {
 				}
 			}
 
-			if (certs.Count == 0) throw new CryptographicException($"O XML não contém um certificado.");
+			if (certs.Count == 0) throw new CryptographicException($"This XML doesn't contain a certificate.");
 
-			if (certs.Count > 1) throw new CryptographicException($"O XML contém mais de um certificado.");
+			if (certs.Count > 1) throw new CryptographicException($"This XML contains more than one certificate.");
 
 			return signed.CheckSignature(certs[0], true);
 		}
